@@ -145,8 +145,8 @@ class MultyScrap:
         print(">>> Running PID : {}\tResult : {}".format(str(os.getpid()), result_df.shape))
         return result_df
 
-if __name__ == "__main__":
-    parser = MultyScrap()
-    print(parser.df)
-    parser.df.to_csv("test.csv",index=False,encoding="utf8")
+# if __name__ == "__main__":
+#     parser = MultyScrap()
+#     print(parser.df)
+#     parser.df.to_csv("test.csv",index=False,encoding="utf8")
 

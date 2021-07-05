@@ -3,6 +3,8 @@
 import re, time
 from datetime import datetime
 
+import multy_scrap
+
 class crawl_mon:
     def __init__(self):
         self.warn = "보안문자를 입력해 주시기 바랍니다"
@@ -33,6 +35,14 @@ class crawl_mon:
         url = "https://www.albamon.com/list/gi/mon_part_list.asp?"
         url += "rpcd=" + str(code) + "&rWDate=" + str(rWDate) + "&ps=" + str(ps) + "&page=" + str(page)
         return url
+
+if __name__=="__main__":
+
+    crawl = multy_scrap.MultyScrap()
+    print(crawl.df)
+    day = datetime.today().strftime("%Y-%m-%d")
+    crawl.df.to_csv(day+".csv",index=False,encoding="utf8")
+
 
 
 
