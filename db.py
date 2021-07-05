@@ -17,12 +17,14 @@ def connect_db():
     print(">>> Connection Success")
 
 
+
 def create_table():
     from sqlalchemy import Table, Column, Integer, String, MetaData, DateTime
     metadata = MetaData()
     engine = create_engine("mysql+mysqldb://root:" + user_info['password'] + "@localhost/" + user_info['database'] + "", encoding='utf8')
     conn = engine.connect()
 
+    # MBTI Table로 변경할 예정
     # 외식음료, 유통판매, 문화여가생호라, 서비스, 사무직, 고객상담리서치영업, 생산건설노무, IT컴퓨터, 교육강사, 디자인, 미디어, 운전배달, 병원간호연구
     table_list = ['food', 'sale', 'cult', 'serv', 'desk', 'rsch', 'buil', 'comp', 'edct', 'desg', 'medi', 'deli', 'oper']
 
@@ -72,6 +74,18 @@ def create_log_table():
     )
     log_table.create(engine)  # create the table
     del [[log_table]]
+
+
+# INSERT 구현예정
+# def insert_table(self, table_name, df):
+#     code_list = {"1000": "food", "2000": "sale", "3000": "cult", "4000": "serv", "6000": "desk", "7000": "rsch",
+#                  "8000": "buil", "9000": "comp", "A000": "edct", "B000": "desg", "C000": "medi", "D000": "deli",
+#                  "E000": "oper"}
+#     table_name = code_list[table_name]
+#     #         df.to_sql(name=table_name, con=self.engine, if_exists='append', index=False, dtype=self.dtypesql)
+#     df.to_sql(name=table_name, con=self.engine, if_exists='append', index=False)
+#     print(">>> [{}] Table Insert Complete".format(table_name))
+
 
 if __name__=="__main__":
     connect_db()
