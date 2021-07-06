@@ -50,7 +50,6 @@ class crawl_mon:
         # mbti별 공고 분류
         for key, value in mbti_dict.items():
             for mbti in value:
-                # print("key : ",df.loc[df['sub_code'] == key].shape)
                 if (mbti == "ISTJ"):
                     self.ISTJ = pd.concat([self.ISTJ, df.loc[df['sub_code'] == key]], sort=False)
                 if (mbti == "ISFJ"):
@@ -87,11 +86,9 @@ class crawl_mon:
 if __name__=="__main__":
     start = time.time()
 
-    # single
-    # crawl = scrap.Scrap()
+    # crawl = scrap.Scrap() # single
+    crawl = scrap.Scrap() # multy
 
-    # multy
-    crawl = multy_scrap.MultyScrap()
 
     day = datetime.today().strftime("%Y-%m-%d")
     crawl.df.to_csv("./log/"+day+".csv",index=False,encoding="utf-8-sig")
@@ -99,7 +96,6 @@ if __name__=="__main__":
     print(">>> Scrap time : ",end)
 
     mon = crawl_mon()
-    # print("crawl.df : ",crawl.df.shape)
     mon.divide_mbti(crawl.df)
 
     db = db.DB()
@@ -108,13 +104,4 @@ if __name__=="__main__":
 
     db.insert_table(mon.ISTJ, mon.ISFJ, mon.INFJ, mon.INTJ, mon.ISTP, mon.ISFP, mon.INFP, mon.INTP, mon.ESTP, mon.ESFP,
                     mon.ENFP, mon.ENTP, mon.ESTJ, mon.ESFJ, mon.ENFJ, mon.ENTJ, end, day)
-
-
-# mbti 별로 df 생성 완료
-    # 이제 mbti 별 테이블 생성 및 insert만 하면 끝
-    # db = db.DB()
-
-
-
-
 
