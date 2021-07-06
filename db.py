@@ -36,15 +36,12 @@ class DB:
             else:
                 raise Exception(">>> Package is not founed. Can't proceed any further.")
         try:
-            # MBTI Table로 변경할 예정
-            # 외식음료, 유통판매, 문화여가생활, 서비스, 사무직, 고객상담리서치영업, 생산건설노무, IT컴퓨터, 교육강사, 디자인, 미디어, 운전배달, 병원간호연구
-            # table_list = ['food', 'sale', 'cult', 'serv', 'desk', 'rsch', 'buil', 'comp', 'edct', 'desg', 'medi', 'deli', 'oper']
             self.MBTI_list = ['istj', 'isfj', 'infj', 'intj', 'istp', 'isfp', 'infp', 'intp', 'estp', 'esfp', 'enfp', 'entp', 'estj', 'esfj', 'enfj', 'entj']
 
             for mbti in self.MBTI_list:
                 temp_table = Table(mbti, metadata,
                     # Column('id', mysql.INTEGER),                            # 인덱스
-                    Column('region', mysql.VARCHAR(10), nullable=False),    # 지역
+                    Column('region', mysql.VARCHAR(20), nullable=False),    # 지역
                     Column('B_name', mysql.VARCHAR(80), nullable=False),    # 상호명
                     Column('pay', mysql.INTEGER, nullable=False),           # 급여
                     Column('pay_type', mysql.VARCHAR(8), nullable=False),   # 지급형태
@@ -70,7 +67,6 @@ class DB:
     def create_log_table(self):
         from sqlalchemy import Table, Column, MetaData, DateTime
         metadata = MetaData()
-        # 로그 테이블
         log_table = Table("log", metadata,
                 Column('istj', mysql.INTEGER),
                 Column('isfj', mysql.INTEGER),
@@ -88,9 +84,9 @@ class DB:
                 Column('esfj', mysql.INTEGER),
                 Column('enfj', mysql.INTEGER),
                 Column('entj', mysql.INTEGER),
-                Column('total_cnt', mysql.INTEGER),                         # 전체 데이터 수집 개수
-                Column('run_time', mysql.INTEGER, nullable=False),      # 수집 시간
-                Column('date', DateTime, nullable=False, primary_key=True)  # 수집일
+                Column('total_cnt', mysql.INTEGER),
+                Column('run_time', mysql.INTEGER, nullable=False),
+                Column('date', DateTime, nullable=False, primary_key=True)
         )
         try:
             log_table.create(self.engine)  # create the table
@@ -136,12 +132,3 @@ class DB:
         log_df.to_sql(name="log", con=self.engine, if_exists='append', index=False)
 
         print(">>> Table Insert Complete")
-
-# if __name__=="__main__":
-#     import pandas as pd
-#     df = pd.read_csv("알바직종 MBTI 분류.csv")
-
-    # db = DB()
-    # db.connect_db()
-    # db.create_table()
-    # db.create_log_table()

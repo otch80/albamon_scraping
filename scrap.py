@@ -2,7 +2,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-from tqdm import tqdm
 from datetime import datetime
 import os, time, re
 import pandas as pd
@@ -71,41 +70,41 @@ class Scrap:
                         temp_list = list()
 
                         try:  # 지역
-                            temp_list.append(temp[temp[temp.isin(["근무지"])].index[0] + 1].split(" ")[0])
+                            temp_list.append(i.find_elements_by_class_name("area")[0].text.split('\n')[1])
                         except:
-                            temp_list.append(None)
+                            continue
                         try:  # 상호명
                             temp_list.append(i.find_element_by_class_name('cName').text)
                         except:
-                            temp_list.append(None)
+                            continue
                         try:  # 급여
                             temp_list.append(int(''.join(p.findall(temp[temp[temp.isin(["급여"])].index[0] + 1]))))
                         except:
-                            temp_list.append(None)
+                            continue
                         try:  # 지급형태
                             temp_list.append(i.find_element_by_class_name('pay > p > img').get_attribute('alt'))
                         except:
-                            temp_list.append(None)
+                            continue
                         try:  # 근무지
                             temp_list.append(temp[temp[temp.isin(["근무지"])].index[0] + 1])
                         except:
-                            temp_list.append(None)
+                            continue
                         try:  # 근무시간
                             temp_list.append(temp[temp[temp.isin(["근무시간"])].index[0] + 1])
                         except:
-                            temp_list.append(None)
+                            continue
                         try:  # url
                             temp_list.append(i.find_element_by_class_name('cName > a').get_attribute('href'))
                         except:
-                            temp_list.append(None)
+                            continue
                         try:  # 기간
                             temp_list.append(temp[temp[temp.isin(["기간·요일"])].index[0] + 1].split("|")[0])
                         except:
-                            temp_list.append(None)
+                            continue
                         try:  # 요일
                             temp_list.append(temp[temp[temp.isin(["기간·요일"])].index[0] + 1].split("|")[1])
                         except:
-                            temp_list.append(None)
+                            continue
 
                         # 하위 코드명
                         temp_list.append(sub_title_code)
@@ -124,10 +123,6 @@ class Scrap:
                         print(sub_title_code, " 마지막 페이지")
                         break
         print(">>> Running PID : {}\tResult : {}".format(str(os.getpid()), result_df.shape))
+
+        result_df = result_df.dropna(axis=0)
         return result_df
-
-# if __name__ == "__main__":
-#     parser = Scrap()
-#     print(parser.df)
-#     parser.df.to_csv("test.csv",index=False,encoding="utf8")
-

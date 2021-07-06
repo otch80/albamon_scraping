@@ -1,4 +1,3 @@
-# Crawl
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -17,7 +16,7 @@ from job_code import job_code
 
 class MultyScrap:
     def __init__(self, jobcode = job_code):
-        self.process = multiprocessing.cpu_count() - 1 # cpu core 개수
+        self.process = multiprocessing.cpu_count() # cpu core 개수
         self.pool = Pool(processes=self.process)
         self.job_code = jobcode
         self.crawl_mon = main.crawl_mon()
@@ -32,13 +31,9 @@ class MultyScrap:
             start = end
             end += end
 
-        # self.pool.map(self.open_browser, repeat(task_list))
         self.df = pd.concat(self.pool.map(self.open_browser, task_list)).drop_duplicates()
         self.pool.close()
         self.pool.join
-
-        """웹드라이버가 여기에 있으면 오류가 난다! 웹드라이버는 싱글스레드라서!"""
-        # self.driver = webdriver.Chrome('./chromedriver.exe')
 
     def open_browser(self, task_list):
         day = datetime.today().strftime("%Y-%m-%d")
@@ -95,7 +90,7 @@ class MultyScrap:
                         temp_list = list()
 
                         try:  # 지역
-                            temp_list.append(temp[temp[temp.isin(["근무지"])].index[0] + 1].split(" ")[0])
+                            temp_list.append(i.find_elements_by_class_name("area")[0].text.split('\n')[1])
                         except:
                             temp_list.append(None)
                         try:  # 상호명
@@ -149,10 +144,5 @@ class MultyScrap:
                         break
         print(">>> Running PID : {}\tResult : {}".format(str(os.getpid()), result_df.shape))
 
+        result_df = result_df.dropna(axis=0)
         return result_df
-
-# if __name__ == "__main__":
-#     parser = MultyScrap()
-#     print(parser.df)
-#     parser.df.to_csv("test.csv",index=False,encoding="utf8")
-

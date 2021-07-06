@@ -86,9 +86,7 @@ class crawl_mon:
 if __name__=="__main__":
     start = time.time()
 
-    # crawl = scrap.Scrap() # single
-    crawl = scrap.Scrap() # multy
-
+    crawl = multy_scrap.MultyScrap()
 
     day = datetime.today().strftime("%Y-%m-%d")
     crawl.df.to_csv("./log/"+day+".csv",index=False,encoding="utf-8-sig")
@@ -104,4 +102,3 @@ if __name__=="__main__":
 
     db.insert_table(mon.ISTJ, mon.ISFJ, mon.INFJ, mon.INTJ, mon.ISTP, mon.ISFP, mon.INFP, mon.INTP, mon.ESTP, mon.ESFP,
                     mon.ENFP, mon.ENTP, mon.ESTJ, mon.ESFJ, mon.ENFJ, mon.ENTJ, end, day)
-
